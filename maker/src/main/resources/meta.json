@@ -6,8 +6,9 @@
   "author": "cp",
   "createTime": "2024-03-27",
   "fileConfig": {
-    "inputRootPath": "D:/work/study/cp-gennerator/demo/acm-template-p",
+    "inputRootPath": ".source/acm-template-p",
     "outputRootPath": "generated",
+    "sourceRootPath": "D:/work/study/cp-gennerator/demo/acm-template-p" ,
     "type": "dir",
     "files": [
       {
@@ -20,7 +21,8 @@
         "inputPath": ".gitignore",
         "outputPath": ".gitignore",
         "type": "file",
-        "generateType": "static"
+        "generateType": "static",
+        "condition": "needGit"
       },
       {
         "inputPath": "README.md",
@@ -32,6 +34,13 @@
   },
   "modelConfig": {
     "models": [
+      {
+        "fieldName": "needGit",
+        "type": "boolean",
+        "description": "是否生成.gitignore文件",
+        "defaultValue": true,
+        "abbr" : "n"
+      },
       {
         "fieldName": "loop",
         "type": "boolean",

@@ -9,7 +9,7 @@ import java.util.List;
 public class ListCommand implements Runnable{
 public void run() {
 // 输入路径
-    String inputPath = "D:/work/study/cp-gennerator/demo/acm-template-p";
+    String inputPath = ".source/acm-template-p";
     List<File> files = FileUtil.loopFiles(inputPath);
     for (File file : files) {
     System.out.println(file);
