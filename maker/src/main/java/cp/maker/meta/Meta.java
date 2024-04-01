@@ -35,13 +35,16 @@ public class Meta {
             private String type;
             private String generateType;
             private String condition;
+            private String groupKey;
+            private String groupName;
+            private List<FileInfo> files;
         }
     }
 
     @NoArgsConstructor
     @Data
     public static class ModelConfig {
-        List<ModelInfo> models;
+        private List<ModelInfo> models;
 
         @NoArgsConstructor
         @Data
@@ -51,6 +54,12 @@ public class Meta {
             private String description;
             private Object defaultValue;
             private String abbr;
+            private String groupKey;
+            private String groupName;
+            private List<ModelInfo> models;
+            private String condition;
+
+            private String allArgsStr;
         }
     }
 }

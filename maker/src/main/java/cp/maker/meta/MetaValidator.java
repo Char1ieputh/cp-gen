@@ -1,6 +1,7 @@
 package cp.maker.meta;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
@@ -11,6 +12,8 @@ import cp.maker.meta.enums.ModelTypeEnum;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 public class MetaValidator  {
 
@@ -23,6 +26,7 @@ public class MetaValidator  {
         modelConfig(meta);
     }
 
+
     private static void modelConfig(Meta meta)  {
         //modelConfig校验和默认值
         Meta.ModelConfig modelConfig =  meta.getModelConfig();
@@ -30,18 +34,31 @@ public class MetaValidator  {
             return;
         }
         List<Meta.ModelConfig.ModelInfo> modelInfoList = modelConfig.getModels();
-        if (!CollUtil.isEmpty(modelInfoList)){
+        if (CollUtil.isEmpty(modelInfoList)){
             return;
         }
         for (Meta.ModelConfig.ModelInfo modelInfo : modelInfoList) {
+            //如果为group，则不校验
+            String groupKey = modelInfo.getGroupKey();
+            if (StrUtil.isNotEmpty(groupKey)){
+                List<Meta.ModelConfig.ModelInfo> subModelInfoList = modelInfo.getModels();
+                System.out.println(subModelInfoList);
+                String allArgsStr = subModelInfoList.stream()
+                        .map(subModelInfo -> String.format("\"--%s\"", subModelInfo.getFieldName()))
+                        .collect(Collectors.joining(", "));
+                modelInfo.setAllArgsStr(allArgsStr);
+                System.out.println(allArgsStr);
+                continue;
+            }
             String fieldName = modelInfo.getFieldName();
-            if (!StrUtil.isBlank(fieldName)) {
-                String modelInfoType = modelInfo.getType();
-                if (StrUtil.isEmpty(modelInfoType)) {
-                    modelInfo.setType(ModelTypeEnum.STRING.getValue());
-                }
-            } else {
-                throw new MetaExecption("未填写fieldName");
+            if (StrUtil.isBlank(fieldName)) {
+                throw new MetaException("未填写 fieldName");
+            }
+            System.out.println(fieldName);
+
+            String modelInfoType = modelInfo.getType();
+            if (StrUtil.isEmpty(modelInfoType)) {
+                modelInfo.setType(ModelTypeEnum.STRING.getValue());
             }
         }
     }
@@ -55,40 +72,44 @@ public class MetaValidator  {
         //必填
         String sourceRootPath = fileConfig.getSourceRootPath();
         if (StrUtil.isBlank(sourceRootPath)){
-            throw new MetaExecption("未填写sourceRootPath");
+            throw new MetaException("未填写sourceRootPath");
         }
         //inputRootPath .source+sourceRootPath 的最后一层路径
         String inputRootPath = fileConfig.getInputRootPath();
-        if (StrUtil.isEmpty(inputRootPath)){
-            String defaultInputRootPath = ".source/" +
-                                          FileUtil.getLastPathEle(Paths.get(sourceRootPath))
-                                                  .getFileName()
-                                                  .toString();
+        String defaultInputRootPath = ".source/" + FileUtil.getLastPathEle(Paths.get(sourceRootPath)).getFileName().toString();
+        if (StrUtil.isEmpty(inputRootPath)) {
             fileConfig.setInputRootPath(defaultInputRootPath);
         }
         String outputRootPath = fileConfig.getOutputRootPath();
-        String defaultOutputPath = "generated";
+        String defaultOutputRootPath = "generated";
         if (StrUtil.isEmpty(outputRootPath)){
-            fileConfig.setOutputRootPath(defaultOutputPath);
+            fileConfig.setOutputRootPath(defaultOutputRootPath);
         }
         String fileConfigType = fileConfig.getType();
-        String defaultType = "dir";
+        String defaultType = FileTypeEnum.DIR.getValue();
         if (StrUtil.isEmpty(fileConfigType)){
             fileConfig.setType(defaultType);
         }
         List<Meta.FileConfig.FileInfo> fileInfoList = fileConfig.getFiles();
-        if (!CollUtil.isEmpty(fileInfoList)) {
+        if (!CollectionUtil.isNotEmpty(fileInfoList)) {
             return;
         }
         for (Meta.FileConfig.FileInfo fileInfo : fileInfoList) {
+            String type = fileInfo.getType();
+            if (FileTypeEnum.GROUP.getValue().equals(type)){
+                continue;
+            }
             //inputPath必填
             String inputPath = fileInfo.getInputPath();
             if (StrUtil.isBlank(inputPath)){
-                throw new MetaExecption("未填写inputPath");
+                throw new MetaException("未填写inputPath");
             }
-            String outputPath = StrUtil.blankToDefault(fileInfo.getOutputPath(),inputPath);
-            fileInfo.setOutputPath(outputPath);
-            String type = fileInfo.getType();
+            // outputPath: 默认等于 inputPath
+            String outputPath = fileInfo.getOutputPath();
+            if (StrUtil.isEmpty(outputPath)) {
+                fileInfo.setOutputPath(inputPath);
+            }
+
             if (StrUtil.isBlank(type)){
                 //无文件后缀
                 if (StrUtil.isBlank(FileUtil.getSuffix(inputPath))){

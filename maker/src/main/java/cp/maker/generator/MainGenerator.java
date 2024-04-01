@@ -1,17 +1,6 @@
 package cp.maker.generator;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.resource.ClassPathResource;
-import cn.hutool.core.util.StrUtil;
-import cp.maker.generator.file.DynFilesGenerator;
 import cp.maker.generator.main.GenerateTemplate;
-import cp.maker.meta.Meta;
-import cp.maker.meta.MetaExecption;
-import cp.maker.meta.MetaManager;
-import freemarker.template.TemplateException;
-
-import java.io.File;
-import java.io.IOException;
 
 public class MainGenerator extends GenerateTemplate {
     @Override

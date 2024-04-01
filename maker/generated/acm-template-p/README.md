@@ -15,10 +15,12 @@ generator <命令> <选项参数>
 
 示例命令：
 、、、
-generator generate  -n  -l  -a  -o 
+generator generate  -ng  -l  -a  -o 
 
 ##参数说明
-1) needGit
+
+
+needGit
 
 类型：boolean
 
@@ -26,9 +28,10 @@ generator generate  -n  -l  -a  -o
 
 默认值：true
 
-缩写： -n
+缩写： -ng
 
-2) loop
+
+loop
 
 类型：boolean
 
@@ -38,7 +41,9 @@ generator generate  -n  -l  -a  -o
 
 缩写： -l
 
-3) author
+    <--核心模块-->
+
+author
 
 类型：String
 
@@ -48,7 +53,7 @@ generator generate  -n  -l  -a  -o
 
 缩写： -a
 
-4) outputText
+outputText
 
 类型：String
 
@@ -57,4 +62,3 @@ generator generate  -n  -l  -a  -o
 默认值："sum = "
 
 缩写： -o
-
