@@ -2,20 +2,13 @@ package cp.maker.generator.file;
 
 
 import cp.maker.generator.file.DynFilesGenerator;
-import cp.maker.model.DataModel;
+
 import freemarker.template.TemplateException;
 
 import java.io.File;
 import java.io.IOException;
 
 public class FileGenerator {
-    public static void main(String[] args) throws TemplateException, IOException {
-        DataModel dataModel =new DataModel();
-        dataModel.setAuthor("cp/maker");
-        dataModel.setLoop(false);
-        dataModel.setOutputText("求和结果：");
-        doGenerator(dataModel);
-    }
     public static void doGenerator(Object model) throws TemplateException, IOException {
         String inputRootPath = "D:\\work\\study\\cp-gennerator\\demo\\acm-template-p";
         String outputRootPath = "D:\\work\\study\\cp-gennerator";

@@ -1,0 +1,24 @@
+{
+    "name": "acm-template-generator",
+    "description": "ACM示例模板生成器",
+    "fileConfig": {
+        "sourceRootPath": "D:/work/study/cp-gennerator/demo/acm-template",
+        "files": [
+            {
+                "inputPath": "src/com/cp/arm/MainTemplate.java",
+                "outputPath": "src/com/cp/arm/MainTemplate.java.ftl",
+                "type": "file",
+                "generateType": "dynamic"
+            }
+        ]
+    },
+    "modelConfig": {
+        "models": [
+            {
+                "fieldName": "outputText",
+                "type": "String",
+                "defaultValue": "sum = "
+            }
+        ]
+    }
+}
