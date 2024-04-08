@@ -74,8 +74,6 @@ public class GenerateTemplate {
         return shellOutputPath;
     }
 
-
-
     /**
      * 构建jar包
      * @param outputPath
@@ -149,10 +147,7 @@ public class GenerateTemplate {
         inputFilePath = inputResourcePath + File.separator + "templates/pom.xml.ftl";
         outputFilePath = outputPath +File.separator +"pom.xml";
         DynFilesGenerator.doGenerate(inputFilePath,outputFilePath, metaObject);
-        //README.md
-        inputFilePath = inputResourcePath + File.separator + "templates/README.md.ftl";
-        outputFilePath = outputPath +File.separator +"README.md";
-        DynFilesGenerator.doGenerate(inputFilePath,outputFilePath, metaObject);
+
     }
 
     /**

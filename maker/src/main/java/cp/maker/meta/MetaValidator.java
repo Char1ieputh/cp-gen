@@ -140,9 +140,9 @@ public class MetaValidator  {
         String createTime = StrUtil.blankToDefault(meta.getCreateTime(),DateUtil.now());
         meta.setName(name);
         meta.setDescription(description);
-        meta.setDescription(basePackage);
-        meta.setDescription(version);
-        meta.setDescription(author);
-        meta.setDescription(createTime);
+        meta.setBasePackage(basePackage);
+        meta.setVersion(version);
+        meta.setAuthor(author);
+        meta.setCreateTime(createTime);
     }
 }

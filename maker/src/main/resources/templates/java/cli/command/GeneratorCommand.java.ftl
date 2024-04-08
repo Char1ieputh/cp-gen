@@ -17,8 +17,8 @@ ${indent}private ${modelInfo.type}  ${modelInfo.fieldName}<#if modelInfo.default
 </#macro>
 
 <#macro generateCommand indent modelInfo>
-${indent}CommandLine commandLine = new CommandLine(${modelInfo.type}Command.class);
-${indent}commandLine.execute(${modelInfo.allArgsStr});
+${indent}CommandLine ${modelInfo.groupKey}CommandLine = new CommandLine(${modelInfo.type}Command.class);
+${indent}${modelInfo.groupKey}CommandLine.execute(${modelInfo.allArgsStr});
 </#macro>
 
 @Command(name = "generator",description = "生成代码",mixinStandardHelpOptions = true)
