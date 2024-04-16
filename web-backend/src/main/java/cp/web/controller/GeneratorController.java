@@ -1,7 +1,13 @@
 package cp.web.controller;
 
+import cn.hutool.core.date.StopWatch;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.qcloud.cos.model.COSObject;
+import com.qcloud.cos.model.COSObjectInputStream;
+import com.qcloud.cos.utils.IOUtils;
 import cp.web.annotation.AuthCheck;
 import cp.web.common.BaseResponse;
 import cp.web.common.DeleteRequest;
@@ -10,6 +16,7 @@ import cp.web.common.ResultUtils;
 import cp.web.constant.UserConstant;
 import cp.web.exception.BusinessException;
 import cp.web.exception.ThrowUtils;
+import cp.web.manager.CosManager;
 import cp.web.meta.Meta;
 import cp.web.model.dto.generator.GeneratorAddRequest;
 import cp.web.model.dto.generator.GeneratorEditRequest;
@@ -26,6 +33,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -45,11 +56,13 @@ public class GeneratorController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private CosManager cosManager;
+
     // region 增删改查
 
     /**
      * 创建
-     *
      * @param generatorAddRequest
      * @param request
      * @return
@@ -80,7 +93,6 @@ public class GeneratorController {
 
     /**
      * 删除
-     *
      * @param deleteRequest
      * @param request
      * @return
@@ -105,7 +117,6 @@ public class GeneratorController {
 
     /**
      * 更新（仅管理员）
-     *
      * @param generatorUpdateRequest
      * @return
      */
@@ -134,7 +145,6 @@ public class GeneratorController {
 
     /**
      * 根据 id 获取
-     *
      * @param id
      * @return
      */
@@ -152,7 +162,6 @@ public class GeneratorController {
 
     /**
      * 分页获取列表（仅管理员）
-     *
      * @param generatorQueryRequest
      * @return
      */
@@ -168,7 +177,6 @@ public class GeneratorController {
 
     /**
      * 分页获取列表（封装类）
-     *
      * @param generatorQueryRequest
      * @param request
      * @return
@@ -187,7 +195,6 @@ public class GeneratorController {
 
     /**
      * 分页获取当前用户创建的资源列表
-     *
      * @param generatorQueryRequest
      * @param request
      * @return
@@ -213,7 +220,6 @@ public class GeneratorController {
 
     /**
      * 编辑（用户）
-     *
      * @param generatorEditRequest
      * @param request
      * @return
@@ -242,6 +248,65 @@ public class GeneratorController {
         }
         boolean result = generatorService.updateById(generator);
         return ResultUtils.success(result);
+    }
+
+    /**
+     * 根据 id 下载
+     * @param id
+     * @return
+     */
+    @GetMapping("/download")
+    public void downloadGeneratorById(long id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (id <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        User loginUser = userService.getLoginUser(request);
+        Generator generator = generatorService.getById(id);
+        if (generator == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+
+        String filepath = generator.getDistPath();
+        if (StrUtil.isBlank(filepath)) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "产物包不存在");
+        }
+
+        // 追踪事件
+        log.info("用户 {} 下载了 {}", loginUser, filepath);
+
+//        String zipFilePath = getCacheFilePath(id, filepath);
+//        if (FileUtil.exist(zipFilePath)) {
+//            // 写入响应
+//            Files.copy(Paths.get(zipFilePath), response.getOutputStream());
+//            return;
+//        }
+
+        COSObjectInputStream cosObjectInput = null;
+        try {
+//            StopWatch stopWatch = new StopWatch();
+//            stopWatch.start();
+            COSObject cosObject = cosManager.getObject(filepath);
+            cosObjectInput = cosObject.getObjectContent();
+
+            // 处理下载到的流
+            byte[] bytes = IOUtils.toByteArray(cosObjectInput);
+
+//            stopWatch.stop();
+//            System.out.println("下载耗时：" + stopWatch.getTotalTimeMillis());
+            // 设置响应头
+            response.setContentType("application/octet-stream;charset=UTF-8");
+            response.setHeader("Content-Disposition", "attachment; filename=" + filepath);
+            // 写入响应
+            response.getOutputStream().write(bytes);
+            response.getOutputStream().flush();
+        } catch (Exception e) {
+            log.error("file download error, filepath = " + filepath, e);
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "下载失败");
+        } finally {
+            if (cosObjectInput != null) {
+                cosObjectInput.close();
+            }
+        }
     }
 
 }

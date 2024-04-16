@@ -3,6 +3,7 @@ package cp.maker.generator.main;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.ClassPathResource;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.ZipUtil;
 import cp.maker.generator.JarGenerator;
 import cp.maker.generator.ScriptGenerator;
 import cp.maker.generator.file.DynFilesGenerator;
@@ -42,13 +43,13 @@ public class GenerateTemplate {
     }
 
     /**
-     * 封装脚本
+     * 生成精简版
      * @param outputPath
      * @param sourceCopyPath
      * @param jarPath
      * @param shellOutputPath
      */
-    protected void buildDist(String outputPath,String sourceCopyPath,String jarPath,String shellOutputPath) {
+    protected String buildDist(String outputPath,String sourceCopyPath,String jarPath,String shellOutputPath) {
         String distOutputPath = outputPath + "-dist";
         //-jar包
         String targetAbsolutePath = distOutputPath +File.separator +"target";
@@ -60,6 +61,7 @@ public class GenerateTemplate {
         FileUtil.copy(shellOutputPath +".bat",distOutputPath,true);
         //拷贝源模板文件
         FileUtil.copy(sourceCopyPath,distOutputPath,true);
+        return distOutputPath;
     }
 
     /**
@@ -161,5 +163,10 @@ public class GenerateTemplate {
         String sourceCopyPath = outputPath + File.separator + ".source";
         FileUtil.copy(sourceRootPath,sourceCopyPath,false);
         return sourceCopyPath;
+    }
+    protected String buildZip(String outputPaht){
+        String zipPath = outputPaht + ".zip";
+        ZipUtil.zip(outputPaht,zipPath);
+        return zipPath;
     }
 }

@@ -4,8 +4,9 @@ import cp.maker.generator.main.GenerateTemplate;
 
 public class MainGenerator extends GenerateTemplate {
     @Override
-    protected void buildDist(String outputPath, String sourceCopyPath, String jarPath, String shellOutputPath) {
+    protected String buildDist(String outputPath, String sourceCopyPath, String jarPath, String shellOutputPath) {
         System.out.println("不要生成精简版");
+        return "";
     }
 }
 

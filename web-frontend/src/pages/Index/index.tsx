@@ -6,6 +6,7 @@ import {Avatar, Card, Flex, Image, Input, List, message, Tabs, Tag, Typography} 
 import {UserOutlined} from "@ant-design/icons";
 import moment from "moment";
 import { Link } from 'umi';
+import PictureUploader from "@/components/PictureUploader";
 
 /**
  * 默认分页参数
@@ -179,6 +180,7 @@ const IndexPage: React.FC = () => {
           </List.Item>
         )}
       />
+      <PictureUploader biz="user_avatar" />
     </PageContainer>
   );
 };
