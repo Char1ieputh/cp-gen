@@ -8,7 +8,6 @@ import java.util.Date;
 
 /**
  * 代码生成器
- *
  * @TableName generator
  */
 @TableName(value = "generator")

@@ -119,15 +119,15 @@ public class GenerateTemplate {
         DynFilesGenerator.doGenerate(inputFilePath,outputFilePath, metaObject);
         //ConfigCommand
         inputFilePath = inputResourcePath + File.separator + "templates/java/cli/command/ConfigCommand.java.ftl";
-        outputFilePath = outputBaseJavaPackagePath +"cli/command/ConfigCommand.java";
+        outputFilePath = outputBaseJavaPackagePath +"/cli/command/ConfigCommand.java";
         DynFilesGenerator.doGenerate(inputFilePath,outputFilePath, metaObject);
         //ListCommand
         inputFilePath = inputResourcePath + File.separator + "templates/java/cli/command/ListCommand.java.ftl";
-        outputFilePath = outputBaseJavaPackagePath +"cli/command/ListCommand.java";
+        outputFilePath = outputBaseJavaPackagePath +"/cli/command/ListCommand.java";
         DynFilesGenerator.doGenerate(inputFilePath,outputFilePath, metaObject);
         //CommandExecutor
         inputFilePath = inputResourcePath + File.separator + "templates/java/cli/CommandExecutor.java.ftl";
-        outputFilePath = outputBaseJavaPackagePath +"cli/CommandExecutor.java";
+        outputFilePath = outputBaseJavaPackagePath +"/cli/CommandExecutor.java";
         DynFilesGenerator.doGenerate(inputFilePath,outputFilePath, metaObject);
         //Main
         inputFilePath = inputResourcePath + File.separator + "templates/java/Main.java.ftl";
@@ -143,8 +143,12 @@ public class GenerateTemplate {
         DynFilesGenerator.doGenerate(inputFilePath,outputFilePath, metaObject);
         //GeneratorCommand
         inputFilePath = inputResourcePath + File.separator + "templates/java/cli/command/GeneratorCommand.java.ftl";
-        outputFilePath = outputBaseJavaPackagePath +"cli/command/GeneratorCommand.java";
+        outputFilePath = outputBaseJavaPackagePath +"/cli/command/GeneratorCommand.java";
         DynFilesGenerator.doGenerate(inputFilePath,outputFilePath, metaObject);
+        //JsonGenerateCommand
+        inputFilePath = inputResourcePath + File.separator + "templates/java/cli/command/JsonGenerateCommand.java.ftl";
+        outputFilePath = outputBaseJavaPackagePath + "/cli/command/JsonGenerateCommand.java";
+        DynFilesGenerator.doGenerate(inputFilePath , outputFilePath, metaObject);
         //pom.xml
         inputFilePath = inputResourcePath + File.separator + "templates/pom.xml.ftl";
         outputFilePath = outputPath +File.separator +"pom.xml";

@@ -13,7 +13,6 @@ public class JarGenerator {
         ProcessBuilder processBuilder = new ProcessBuilder(mavenCommand.split(" "));
         processBuilder.directory(new File(projectDir));
 
-
         Process process = processBuilder.start();
         //读取命令输出
         InputStream inputStream = process.getInputStream();

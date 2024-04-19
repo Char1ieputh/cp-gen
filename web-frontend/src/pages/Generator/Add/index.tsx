@@ -19,6 +19,7 @@ import {
 import {history} from "@umijs/max";
 import {useSearchParams} from "@@/exports";
 import { UploadFile } from 'antd/lib/upload/interface';
+import ModelConfigForm from "@/pages/Generator/Add/components/ModelConfigForm";
 
 /**
  * 创建生成器页面
@@ -158,10 +159,10 @@ const GeneratorAddPage: React.FC = () => {
               <PictureUploader biz="generator_picture" />
             </ProFormItem>
           </StepsForm.StepForm>
-          <StepsForm.StepForm
-            name="modelConfig"
-            title="模型配置"
-          >
+          <StepsForm.StepForm name="modelConfig" title="模型配置" onFinish={async (values) => {
+            console.log(values);
+            return true;}}>
+            <ModelConfigForm formRef={formRef} oldData={oldData}/>
           </StepsForm.StepForm>
           <StepsForm.StepForm
             name="fileConfig"
@@ -172,7 +173,6 @@ const GeneratorAddPage: React.FC = () => {
             <ProFormItem label="产物包" name="distPath">
               <FileUploader biz="generator_dist" description="请上传生成器文件压缩包" />
             </ProFormItem>
-
           </StepsForm.StepForm>
         </StepsForm>
       )}
