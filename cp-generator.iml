@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="GENERAL_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/demo" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/demo/acm-template/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/maker" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web-backend" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web-frontend" isTestSource="false" />
+    </content>
+    <orderEntry type="jdk" jdkName="17" jdkType="JavaSDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
