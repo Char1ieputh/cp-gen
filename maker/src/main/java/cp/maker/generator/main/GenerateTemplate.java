@@ -15,14 +15,16 @@ import java.io.File;
 import java.io.IOException;
 
 public class GenerateTemplate {
-    public void  doGenerate() throws TemplateException, IOException, InterruptedException {
 
+
+    public void doGenerate() throws TemplateException, IOException, InterruptedException {
         Meta metaObject = MetaManager.getMetaObject();
-        System.out.println(metaObject);
+        String projectPath = System.getProperty("user.dir");
+        String outputPath = projectPath + File.separator + "generated" + File.separator + metaObject.getName();
+        doGenerate(metaObject, outputPath);
+    }
+    public void doGenerate(Meta metaObject, String outputPath) throws TemplateException, IOException, InterruptedException  {
 
-        //输出根路径
-        String path = System.getProperty("user.dir");//D:\work\study\cp-gennerator\maker;
-        String outputPath = path + File.separator +"generated"+File.separator + metaObject.getName();//D:\work\study\cp-gennerator\maker\generated\acm-template-p;
         if (!FileUtil.exist(outputPath)){
             FileUtil.mkdir(outputPath);
         }
